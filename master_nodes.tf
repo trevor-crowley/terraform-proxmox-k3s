@@ -102,13 +102,13 @@ resource "proxmox_vm_qemu" "k3s-master" {
           user     = "k3s"
           password = random_password.k3s-master-db-password.result
         }]
-        cluster_ca_files = var.cluster_ca_files == null ? null : [{
-          client_ca_key         = file("${var.cluster_ca_files.client_ca_key}")
-          client_ca_crt         = file("${var.cluster_ca_files.client_ca_crt}")
-          server_ca_key         = file("${var.cluster_ca_files.server_ca_key}")
-          server_ca_crt         = file("${var.cluster_ca_files.server_ca_crt}")
-          request_header_ca_key = file("${var.cluster_ca_files.request_header_ca_key}")
-          request_header_ca_crt = file("${var.cluster_ca_files.request_header_ca_crt}")
+        k3s_ca_files = var.k3s_ca_files == null ? null : [{
+          client_ca_key         = file("${var.k3s_ca_files.client_ca_key}")
+          client_ca_crt         = file("${var.k3s_ca_files.client_ca_crt}")
+          server_ca_key         = file("${var.k3s_ca_files.server_ca_key}")
+          server_ca_crt         = file("${var.k3s_ca_files.server_ca_crt}")
+          request_header_ca_key = file("${var.k3s_ca_files.request_header_ca_key}")
+          request_header_ca_crt = file("${var.k3s_ca_files.request_header_ca_crt}")
         }]
 
         http_proxy  = var.http_proxy
