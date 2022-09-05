@@ -107,6 +107,14 @@ resource "proxmox_vm_qemu" "k3s-worker" {
         server_hosts = ["https://${local.support_node_ip}:6443"]
         node_taints  = each.value.taints
         datastores   = []
+        cluster_ca_files = var.cluster_ca_files == null ? null : [{
+          client_ca_key         = file("${var.cluster_ca_files.client_ca_key}")
+          client_ca_crt         = file("${var.cluster_ca_files.client_ca_crt}")
+          server_ca_key         = file("${var.cluster_ca_files.server_ca_key}")
+          server_ca_crt         = file("${var.cluster_ca_files.server_ca_crt}")
+          request_header_ca_key = file("${var.cluster_ca_files.request_header_ca_key}")
+          request_header_ca_crt = file("${var.cluster_ca_files.request_header_ca_crt}")
+        }]
 
         http_proxy  = var.http_proxy
       })
