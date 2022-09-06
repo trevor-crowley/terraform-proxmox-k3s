@@ -38,6 +38,10 @@ resource "proxmox_vm_qemu" "k3s-worker" {
     proxmox_vm_qemu.k3s-master,
   ]
 
+  lifecycle {
+    replace_triggered_by = null_resource.k3s_ca_certificates
+  }
+
   for_each = local.mapped_worker_nodes
 
   target_node = var.proxmox_node
@@ -94,7 +98,7 @@ resource "proxmox_vm_qemu" "k3s-worker" {
     type = "ssh"
     user = each.value.user
     host = each.value.ip
-    private_key = file("${var.private_key}")
+    private_key = file(var.private_key)
   }
 
   provisioner "remote-exec" {
@@ -108,12 +112,12 @@ resource "proxmox_vm_qemu" "k3s-worker" {
         node_taints  = each.value.taints
         datastores   = []
         k3s_ca_files = var.k3s_ca_files == null ? null : [{
-          client_ca_key         = file("${var.k3s_ca_files.client_ca_key}")
-          client_ca_crt         = file("${var.k3s_ca_files.client_ca_crt}")
-          server_ca_key         = file("${var.k3s_ca_files.server_ca_key}")
-          server_ca_crt         = file("${var.k3s_ca_files.server_ca_crt}")
-          request_header_ca_key = file("${var.k3s_ca_files.request_header_ca_key}")
-          request_header_ca_crt = file("${var.k3s_ca_files.request_header_ca_crt}")
+          client_ca_key         = file(var.k3s_ca_files.client_ca_key)
+          client_ca_crt         = file(var.k3s_ca_files.client_ca_crt)
+          server_ca_key         = file(var.k3s_ca_files.server_ca_key)
+          server_ca_crt         = file(var.k3s_ca_files.server_ca_crt)
+          request_header_ca_key = file(var.k3s_ca_files.request_header_ca_key)
+          request_header_ca_crt = file(var.k3s_ca_files.request_header_ca_crt)
         }]
 
         http_proxy  = var.http_proxy
