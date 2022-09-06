@@ -11,6 +11,7 @@ echo "${k3s_ca_files.server_ca_key}"         /var/lib/rancher/k3s/server/tls/ser
 echo "${k3s_ca_files.server_ca_crt}"         /var/lib/rancher/k3s/server/tls/server-ca.crt
 echo "${k3s_ca_files.request_header_ca_key}" /var/lib/rancher/k3s/server/tls/request-header-ca.key
 echo "${k3s_ca_files.request_header_ca_crt}" /var/lib/rancher/k3s/server/tls/request-header-ca.crt
+sha256sum /var/lib/rancher/k3s/server/tls/* > /tmp/debug
 %{ endif }
 
 curl -sfL https://get.k3s.io | sh -s - ${mode} \
