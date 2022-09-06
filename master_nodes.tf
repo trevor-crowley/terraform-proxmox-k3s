@@ -26,7 +26,12 @@ resource "random_password" "k3s-server-token" {
 
 resource "null_resource" "k3s_ca_certificates" {
   triggers = {
-    config_change = var.k3s_ca_files
+    client_ca_key         = sha1(file(var.k3s_ca_files.client_ca_key))
+    client_ca_crt         = sha1(file(var.k3s_ca_files.client_ca_crt))
+    server_ca_key         = sha1(file(var.k3s_ca_files.server_ca_key))
+    server_ca_crt         = sha1(file(var.k3s_ca_files.server_ca_crt))
+    request_header_ca_key = sha1(file(var.k3s_ca_files.request_header_ca_key))
+    request_header_ca_crt = sha1(file(var.k3s_ca_files.request_header_ca_crt))
   }
 }
 
@@ -34,10 +39,6 @@ resource "proxmox_vm_qemu" "k3s-master" {
   depends_on = [
     proxmox_vm_qemu.k3s-support,
   ]
-
-  lifecycle {
-    replace_triggered_by = null_resource.k3s_ca_certificates
-  }
 
   count       = var.master_nodes_count
   target_node = var.proxmox_node
@@ -72,7 +73,8 @@ resource "proxmox_vm_qemu" "k3s-master" {
   }
 
   lifecycle {
-    ignore_changes = [
+    replace_triggered_by = null_resource.k3s_ca_certificates
+    ignore_changes       = [
       ciuser,
       sshkeys,
       disk,
@@ -91,9 +93,9 @@ resource "proxmox_vm_qemu" "k3s-master" {
   nameserver = var.nameserver
 
   connection {
-    type = "ssh"
-    user = local.master_node_settings.user
-    host = local.master_node_ips[count.index]
+    type        = "ssh"
+    user        = local.master_node_settings.user
+    host        = local.master_node_ips[count.index]
     private_key = file(var.private_key)
   }
 
@@ -106,22 +108,26 @@ resource "proxmox_vm_qemu" "k3s-master" {
         server_hosts = []
         node_taints  = ["CriticalAddonsOnly=true:NoExecute"]
         disable      = var.k3s_disable_components
-        datastores = [{
-          host     = "${local.support_node_ip}:3306"
-          name     = "k3s"
-          user     = "k3s"
-          password = random_password.k3s-master-db-password.result
-        }]
-        k3s_ca_files = var.k3s_ca_files == null ? null : [{
-          client_ca_key         = file(var.k3s_ca_files.client_ca_key)
-          client_ca_crt         = file(var.k3s_ca_files.client_ca_crt)
-          server_ca_key         = file(var.k3s_ca_files.server_ca_key)
-          server_ca_crt         = file(var.k3s_ca_files.server_ca_crt)
-          request_header_ca_key = file(var.k3s_ca_files.request_header_ca_key)
-          request_header_ca_crt = file(var.k3s_ca_files.request_header_ca_crt)
-        }]
+        datastores   = [
+          {
+            host     = "${local.support_node_ip}:3306"
+            name     = "k3s"
+            user     = "k3s"
+            password = random_password.k3s-master-db-password.result
+          }
+        ]
+        k3s_ca_files = var.k3s_ca_files == null ? null : [
+          {
+            client_ca_key         = file(var.k3s_ca_files.client_ca_key)
+            client_ca_crt         = file(var.k3s_ca_files.client_ca_crt)
+            server_ca_key         = file(var.k3s_ca_files.server_ca_key)
+            server_ca_crt         = file(var.k3s_ca_files.server_ca_crt)
+            request_header_ca_key = file(var.k3s_ca_files.request_header_ca_key)
+            request_header_ca_crt = file(var.k3s_ca_files.request_header_ca_crt)
+          }
+        ]
 
-        http_proxy  = var.http_proxy
+        http_proxy = var.http_proxy
       })
     ]
   }

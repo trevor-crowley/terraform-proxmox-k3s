@@ -38,10 +38,6 @@ resource "proxmox_vm_qemu" "k3s-worker" {
     proxmox_vm_qemu.k3s-master,
   ]
 
-  lifecycle {
-    replace_triggered_by = null_resource.k3s_ca_certificates
-  }
-
   for_each = local.mapped_worker_nodes
 
   target_node = var.proxmox_node
@@ -76,6 +72,7 @@ resource "proxmox_vm_qemu" "k3s-worker" {
   }
 
   lifecycle {
+    replace_triggered_by = null_resource.k3s_ca_certificates
     ignore_changes = [
       ciuser,
       sshkeys,
@@ -95,9 +92,9 @@ resource "proxmox_vm_qemu" "k3s-worker" {
   nameserver = var.nameserver
 
   connection {
-    type = "ssh"
-    user = each.value.user
-    host = each.value.ip
+    type        = "ssh"
+    user        = each.value.user
+    host        = each.value.ip
     private_key = file(var.private_key)
   }
 

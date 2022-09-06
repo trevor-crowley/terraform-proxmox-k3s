@@ -78,7 +78,7 @@ variable "support_node_settings" {
     db_name        = optional(string),
     db_user        = optional(string),
     network_bridge = optional(string),
-    network_tag    = optional(number), 
+    network_tag    = optional(number),
   })
 }
 
@@ -104,7 +104,7 @@ variable "master_node_settings" {
 
 variable "node_pools" {
   description = "Node pool definitions for the cluster."
-  type = list(object({
+  type        = list(object({
 
     name   = string,
     size   = number,
@@ -140,12 +140,12 @@ variable "k3s_disable_components" {
 
 variable "k3s_ca_files" {
   type = object({
-    client_ca_key         = optional(string),
-    client_ca_crt         = optional(string),
-    server_ca_key         = optional(string),
-    server_ca_crt         = optional(string),
-    request_header_ca_key = optional(string),
-    request_header_ca_crt = optional(string)
+    client_ca_key         = string,
+    client_ca_crt         = string,
+    server_ca_key         = string,
+    server_ca_crt         = string,
+    request_header_ca_key = string,
+    request_header_ca_crt = string
   })
   description = "Paths to CA certificates. These CA certificates will be used by k3s. Changing these CA certificates requires a recreation of the whole cluster"
 }
