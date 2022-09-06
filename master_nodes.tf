@@ -73,7 +73,7 @@ resource "proxmox_vm_qemu" "k3s-master" {
   }
 
   lifecycle {
-    replace_triggered_by = null_resource.k3s_ca_certificates
+    replace_triggered_by = [null_resource.k3s_ca_certificates]
     ignore_changes       = [
       ciuser,
       sshkeys,
