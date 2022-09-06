@@ -148,6 +148,7 @@ variable "k3s_ca_files" {
     request_header_ca_crt = string
   })
   description = "Paths to CA certificates. These CA certificates will be used by k3s. Changing these CA certificates requires a recreation of the whole cluster"
+  default = null
 }
 
 variable "http_proxy" {
