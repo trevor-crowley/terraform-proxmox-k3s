@@ -8,7 +8,7 @@ locals {
     for pool in var.node_pools :
     [
       for i in range(pool.size) :
-      merge(object({
+      merge({
         cores          = optional(pool.cores,          2)
         sockets        = optional(pool.sockets,        1)
         memory         = optional(pool.memory,         4096)
@@ -19,7 +19,7 @@ locals {
         template       = optional(pool.template,        var.node_template)
         network_bridge = optional(pool.network_bridge, "vmbr0")
         network_tag    = optional(pool.network_tag,    -1)
-        }), {
+        }, {
         i  = i
         ip = cidrhost(pool.subnet, i)
       })

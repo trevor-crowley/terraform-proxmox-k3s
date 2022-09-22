@@ -2,7 +2,7 @@
 resource "macaddress" "k3s-support" {}
 
 locals {
-  support_node_settings = object({
+  support_node_settings = {
     cores   = optional(var.support_node_settings.cores,   2)
     sockets = optional(var.support_node_settings.sockets, 1)
     memory  = optional(var.support_node_settings.memory,  4096)
@@ -17,7 +17,7 @@ locals {
     db_user = "k3s"
 
     network_bridge = "vmbr0"
-  })
+  }
 
   support_node_ip = cidrhost(var.control_plane_subnet, 0)
 }
