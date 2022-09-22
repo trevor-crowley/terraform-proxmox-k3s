@@ -9,16 +9,16 @@ locals {
     [
       for i in range(pool.size) :
       merge({
-        cores          = optional(pool.cores,          2)
-        sockets        = optional(pool.sockets,        1)
-        memory         = optional(pool.memory,         4096)
-        storage_type   = optional(pool.storage_type,   "scsi")
-        storage_id     = optional(pool.storage_id,     "local-lvm")
-        disk_size      = optional(pool.disk_size,      "20G")
-        user           = optional(pool.user,           "k3s")
-        template       = optional(pool.template,        var.node_template)
-        network_bridge = optional(pool.network_bridge, "vmbr0")
-        network_tag    = optional(pool.network_tag,    -1)
+        cores          = pool.cores
+        sockets        = pool.sockets
+        memory         = pool.memory
+        storage_type   = pool.storage_type
+        storage_id     = pool.storage_id
+        disk_size      = pool.disk_size
+        user           = pool.user
+        template       = pool.template
+        network_bridge = pool.network_bridge
+        network_tag    = pool.network_tag
         }, {
         i  = i
         ip = cidrhost(pool.subnet, i)
