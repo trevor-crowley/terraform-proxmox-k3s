@@ -3,17 +3,6 @@ export HTTPS_PROXY="${http_proxy}"
 export http_proxy="${http_proxy}"
 export https_proxy="${http_proxy}"
 
-%{ if k3s_ca_files != null }
-mkdir -p /var/lib/rancher/k3s/server/tls
-echo "${k3s_ca_files.client_ca_key}"         /var/lib/rancher/k3s/server/tls/client-ca.key
-echo "${k3s_ca_files.client_ca_crt}"         /var/lib/rancher/k3s/server/tls/client-ca.crt
-echo "${k3s_ca_files.server_ca_key}"         /var/lib/rancher/k3s/server/tls/server-ca.key
-echo "${k3s_ca_files.server_ca_crt}"         /var/lib/rancher/k3s/server/tls/server-ca.crt
-echo "${k3s_ca_files.request_header_ca_key}" /var/lib/rancher/k3s/server/tls/request-header-ca.key
-echo "${k3s_ca_files.request_header_ca_crt}" /var/lib/rancher/k3s/server/tls/request-header-ca.crt
-sha256sum /var/lib/rancher/k3s/server/tls/* > /tmp/debug
-%{ endif }
-
 curl -sfL https://get.k3s.io | sh -s - ${mode} \
 %{ for component in disable ~}
 --disable ${component} \

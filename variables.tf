@@ -138,19 +138,6 @@ variable "k3s_disable_components" {
   default     = []
 }
 
-variable "k3s_ca_files" {
-  type = object({
-    client_ca_key         = string,
-    client_ca_crt         = string,
-    server_ca_key         = string,
-    server_ca_crt         = string,
-    request_header_ca_key = string,
-    request_header_ca_crt = string
-  })
-  description = "Paths to CA certificates. These CA certificates will be used by k3s. Changing these CA certificates requires a recreation of the whole cluster"
-  default = null
-}
-
 variable "http_proxy" {
   default     = ""
   type        = string
