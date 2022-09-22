@@ -9,6 +9,7 @@ locals {
     [
       for i in range(pool.size) :
       merge({
+        name           = pool.name
         cores          = pool.cores
         sockets        = pool.sockets
         memory         = pool.memory
