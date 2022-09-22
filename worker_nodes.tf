@@ -8,7 +8,7 @@ locals {
     for pool in var.node_pools :
     [
       for i in range(pool.size) :
-      merge(defaults(pool, {
+      merge(optional(pool, {
         cores          = 2
         sockets        = 1
         memory         = 4096

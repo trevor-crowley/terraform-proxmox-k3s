@@ -3,7 +3,7 @@ resource "macaddress" "k3s-masters" {
 }
 
 locals {
-  master_node_settings = defaults(var.master_node_settings, {
+  master_node_settings = optional(var.master_node_settings, {
     cores          = 2
     sockets        = 1
     memory         = 4096

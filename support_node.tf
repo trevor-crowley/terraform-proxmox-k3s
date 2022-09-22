@@ -2,7 +2,7 @@
 resource "macaddress" "k3s-support" {}
 
 locals {
-  support_node_settings = defaults(var.support_node_settings, {
+  support_node_settings = optional(var.support_node_settings, {
     cores   = 2
     sockets = 1
     memory  = 4096
