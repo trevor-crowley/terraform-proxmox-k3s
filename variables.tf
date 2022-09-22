@@ -119,11 +119,11 @@ variable "node_pools" {
     storage_id   = optional(string, "local-lvm"),
     disk_size    = optional(string, "20G"),
     user         = optional(string, "k3s"),
-    network_tag  = optional(number, "vmbr0"),
+    network_tag  = optional(number, -1),
 
     template = optional(string, var.node_template),
 
-    network_bridge = optional(string),
+    network_bridge = optional(string, "vmbr0"),
   }))
 }
 variable "api_hostnames" {
