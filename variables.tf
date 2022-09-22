@@ -121,7 +121,7 @@ variable "node_pools" {
     user         = optional(string, "k3s"),
     network_tag  = optional(number, -1),
 
-    template = optional(string, var.node_template),
+    template = optional(string),
 
     network_bridge = optional(string, "vmbr0"),
   }))

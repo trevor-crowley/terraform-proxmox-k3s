@@ -16,7 +16,7 @@ locals {
         storage_id     = pool.storage_id
         disk_size      = pool.disk_size
         user           = pool.user
-        template       = pool.template
+        template       = coalesce(pool.template, var.node_template)
         network_bridge = pool.network_bridge
         network_tag    = pool.network_tag
         }, {
