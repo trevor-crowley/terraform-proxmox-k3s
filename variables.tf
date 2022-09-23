@@ -110,7 +110,7 @@ variable "node_pools" {
     size   = number,
     subnet = string,
 
-    taints = optional(list(string)),
+    taints = optional(list(string), []),
 
     cores        = optional(number, 2),
     sockets      = optional(number, 1),
