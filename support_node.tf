@@ -23,8 +23,9 @@ resource "proxmox_vm_qemu" "k3s-support" {
   sockets = local.support_node_settings.sockets
   memory  = local.support_node_settings.memory
 
-
   agent = 1
+  onboot = var.onboot
+
   disk {
     type    = local.support_node_settings.storage_type
     storage = local.support_node_settings.storage_id

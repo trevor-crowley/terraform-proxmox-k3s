@@ -66,6 +66,12 @@ variable "proxmox_resource_pool" {
   default     = ""
 }
 
+variable "onboot" {
+  type = bool
+  description = "Whether to have the cluster startup after the PVE node starts."
+  default = true
+}
+
 variable "support_node_settings" {
   type = object({
     cores          = optional(number, 2),
@@ -126,6 +132,7 @@ variable "node_pools" {
     network_bridge = optional(string, "vmbr0"),
   }))
 }
+
 variable "api_hostnames" {
   description = "Alternative hostnames for the API server."
   type        = list(string)

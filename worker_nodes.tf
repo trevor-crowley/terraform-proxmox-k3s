@@ -55,6 +55,7 @@ resource "proxmox_vm_qemu" "k3s-worker" {
   memory  = each.value.memory
 
   agent = 1
+  onboot = var.onboot
 
   disk {
     type    = each.value.storage_type

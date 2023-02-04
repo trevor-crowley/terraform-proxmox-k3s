@@ -32,6 +32,7 @@ resource "proxmox_vm_qemu" "k3s-master" {
   memory  = local.master_node_settings.memory
 
   agent = 1
+  onboot = var.onboot
 
   disk {
     type    = local.master_node_settings.storage_type
