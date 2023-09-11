@@ -1,8 +1,19 @@
 terraform {
+   backend "s3" {
+    bucket = "my-k3s"
+    key = "terraform.tfstate"
+    endpoint = "https://truenas.local.lan:9000"
+    region="us-east-1"
+    skip_credentials_validation = true
+    skip_metadata_api_check = true
+    skip_region_validation = true
+    force_path_style = true
+    }
+
   required_providers {
     proxmox = {
       source = "Telmate/proxmox"
-      version = "2.9.3"
+      version = "2.9.14"
     }
 
     macaddress = {
@@ -22,22 +33,28 @@ provider proxmox {
   }
 
   ## TODO: Update these for your specific setup
-  pm_api_url = "https://192.168.0.25:8006/api2/json"
+  pm_tls_insecure = true
+  pm_api_url = "https://pve1.local.lan:8006/api2/json"
+  pm_user = "root@pam"
+  pm_password = var.proxmox_password
+  pm_otp = ""
 }
 
 module "k3s" {
-  source  = "fvumbaca/k3s/proxmox"
+  source  = "klimer2012/k3s/proxmox"
+#  source  = "fvumbaca/k3s/proxmox"
   version = ">= 0.0.0, < 1" # Get latest 0.X release
 
-  authorized_keys_file = "authorized_keys"
+  authorized_keys_file = var.public_keys
 
-  proxmox_node = "my-proxmox-node"
+  proxmox_node = "pve1"
 
-  node_template = "ubuntu-template"
+  node_template = "Ubuntu-22.04.3-LTS-k3s"
   proxmox_resource_pool = "my-k3s"
 
-  network_gateway = "192.168.0.1"
-  lan_subnet = "192.168.0.0/24"
+
+  network_gateway = "192.168.99.1"
+  lan_subnet = "192.168.99.0/24"
 
   support_node_settings = {
     cores = 2
@@ -51,14 +68,15 @@ module "k3s" {
   }
 
   # 192.168.0.200 -> 192.168.0.207 (6 available IPs for nodes)
-  control_plane_subnet = "192.168.0.200/29"
+  control_plane_subnet = "192.168.99.200/29"
 
   node_pools = [
     {
-      name = "default"
+      name = "worker"
+#      name = "default"
       size = 2
       # 192.168.0.208 -> 192.168.0.223 (14 available IPs for nodes)
-      subnet = "192.168.0.208/28"
+      subnet = "192.168.99.208/28"
     }
   ]
 }
