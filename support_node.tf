@@ -24,12 +24,21 @@ resource "proxmox_vm_qemu" "k3s-support" {
   memory  = local.support_node_settings.memory
 
   agent = 1
+  #
+  scsihw = "virtio-scsi-pci"
+  qemu_os = "l26"
+  #
   onboot = var.onboot
 
   disk {
     type    = local.support_node_settings.storage_type
     storage = local.support_node_settings.storage_id
     size    = local.support_node_settings.disk_size
+
+    #
+    ssd = 1
+    discard = "on"
+    #
   }
 
   network {

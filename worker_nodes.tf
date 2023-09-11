@@ -55,12 +55,16 @@ resource "proxmox_vm_qemu" "k3s-worker" {
   memory  = each.value.memory
 
   agent = 1
+  scsihw = "virtio-scsi-pci"
+  qemu_os = "l26"
   onboot = var.onboot
 
   disk {
     type    = each.value.storage_type
     storage = each.value.storage_id
     size    = each.value.disk_size
+    ssd = 1
+    discard = "on"
   }
 
   network {
