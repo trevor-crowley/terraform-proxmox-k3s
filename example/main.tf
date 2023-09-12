@@ -71,7 +71,7 @@ module "k3s" {
   node_pools = [
     {
       name = "worker"
-      size = 3
+      size = 2
       # 192.168.0.208 -> 192.168.0.223 (14 available IPs for nodes)
       subnet = "192.168.99.208/28"
     }
