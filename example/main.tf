@@ -42,9 +42,6 @@ provider proxmox {
 
 module "k3s" {
   source  = "github.com/trevor-crowley/terraform-proxmox-k3s.git"
-#  source  = "klimer2012/k3s/proxmox"
-#  source  = "fvumbaca/k3s/proxmox"
-#  version = ">= 0.0.0, < 1" # Get latest 0.X release
 
   authorized_keys_file = var.public_keys
 
@@ -74,8 +71,7 @@ module "k3s" {
   node_pools = [
     {
       name = "worker"
-#      name = "default"
-      size = 2
+      size = 3
       # 192.168.0.208 -> 192.168.0.223 (14 available IPs for nodes)
       subnet = "192.168.99.208/28"
     }

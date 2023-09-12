@@ -123,7 +123,7 @@ variable "node_pools" {
     memory       = optional(number, 4096),
     storage_type = optional(string, "scsi"),
     storage_id   = optional(string, "local2-lvm"),
-    disk_size    = optional(string, "20G"),
+    disk_size    = optional(string, "60G"),
     user         = optional(string, "k3s"),
     network_tag  = optional(number, -1),
 
