@@ -56,3 +56,6 @@ then
 
 terraform init -backend-config=backend.hcl
 terraform init -var-file="secret.tfvars"
+
+terraform apply -var-file="secret.tfvars" 
+terraform apply -var-file="secret.tfvars" --destroy
