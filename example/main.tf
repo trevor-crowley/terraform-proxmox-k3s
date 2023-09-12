@@ -41,9 +41,10 @@ provider proxmox {
 }
 
 module "k3s" {
-  source  = "klimer2012/k3s/proxmox"
+  source  = "github.com/trevor-crowley/terraform-proxmox-k3s.git"
+#  source  = "klimer2012/k3s/proxmox"
 #  source  = "fvumbaca/k3s/proxmox"
-  version = ">= 0.0.0, < 1" # Get latest 0.X release
+#  version = ">= 0.0.0, < 1" # Get latest 0.X release
 
   authorized_keys_file = var.public_keys
 

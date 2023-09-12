@@ -53,3 +53,6 @@ then
    session by running `export KUBECONFIG="config.yaml"`. If you want to add the
    context more perminantly globaly, [refer to the document on managing Kubernetes configs](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/#create-a-second-configuration-file).
 
+
+terraform init -backend-config=backend.hcl
+terraform init -var-file="secret.tfvars"
