@@ -42,14 +42,13 @@ provider proxmox {
 
 module "k3s" {
   source  = "github.com/trevor-crowley/terraform-proxmox-k3s.git"
-
+  cluster_name = "k3s"
   authorized_keys_file = var.public_keys
 
   proxmox_node = "pve1"
 
   node_template = "Ubuntu-22.04.3-LTS-k3s"
   proxmox_resource_pool = "my-k3s"
-
 
   network_gateway = "192.168.99.1"
   lan_subnet = "192.168.99.0/24"
@@ -71,15 +70,63 @@ module "k3s" {
   node_pools = [
     {
       name = "worker"
+      storage_id = "local2-lvm"
+      disk_size = "80G"
       size = 2
       # 192.168.0.208 -> 192.168.0.223 (14 available IPs for nodes)
-      subnet = "192.168.99.208/28"
+      subnet = "192.168.99.208/29"
     }
   ]
 }
 
+module "rancher_k3s" {
+  source  = "github.com/trevor-crowley/terraform-proxmox-k3s.git"
+  cluster_name = "rancher"
+  authorized_keys_file = var.public_keys
+
+  proxmox_node = "pve1"
+
+  node_template = "Ubuntu-22.04.3-LTS-k3s"
+  proxmox_resource_pool = "my-k3s"
+
+  network_gateway = "192.168.99.1"
+  lan_subnet = "192.168.99.0/24"
+
+  support_node_settings = {
+    cores = 2
+    memory = 4096
+  }
+
+  master_nodes_count = 2
+  master_node_settings = {
+    cores = 2
+    memory = 4096
+    disk_size = "10G"
+  }
+
+  # 192.168.0.200 -> 192.168.0.207 (6 available IPs for nodes)
+  control_plane_subnet = "192.168.99.216/29"
+
+ node_pools = [
+    {
+      name = "worker"
+      storage_id = "local-lvm"
+      disk_size = "10G"
+      size = 2
+      # 192.168.0.208 -> 192.168.0.223 (14 available IPs for nodes)
+      subnet = "192.168.99.224/29"
+    }
+  ]
+}
+
+
 output "kubeconfig" {
   value = module.k3s.k3s_kubeconfig
+  sensitive = true
+}
+
+output "kubeconfig_rancher" {
+  value = module.rancher_k3s.k3s_kubeconfig
   sensitive = true
 }
 
