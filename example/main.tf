@@ -39,7 +39,7 @@ provider proxmox {
   pm_password = var.proxmox_password
   pm_otp = ""
 }
-
+/*
 module "k3s" {
   source  = "github.com/trevor-crowley/terraform-proxmox-k3s.git"
   cluster_name = "k3s"
@@ -78,7 +78,7 @@ module "k3s" {
     }
   ]
 }
-
+*/
 module "rancher_k3s" {
   source  = "github.com/trevor-crowley/terraform-proxmox-k3s.git"
   cluster_name = "rancher"
@@ -119,12 +119,12 @@ module "rancher_k3s" {
   ]
 }
 
-
+/*
 output "kubeconfig" {
   value = module.k3s.k3s_kubeconfig
   sensitive = true
 }
-
+*/
 output "kubeconfig_rancher" {
   value = module.rancher_k3s.k3s_kubeconfig
   sensitive = true
