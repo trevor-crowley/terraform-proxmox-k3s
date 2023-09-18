@@ -59,3 +59,4 @@ terraform init -var-file="secret.tfvars"
 
 terraform apply -var-file="secret.tfvars" 
 terraform apply -var-file="secret.tfvars" --destroy
+INSTALL_K3S_VERSION=v1.26.4+k3s1

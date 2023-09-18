@@ -144,6 +144,11 @@ variable "k3s_disable_components" {
   type        = list(string)
   default     = []
 }
+variable "k3s_version" {
+  default     = "v1.26.4+k3s1"
+  type        = string
+  description = "k3s_version"
+}
 
 variable "http_proxy" {
   default     = ""

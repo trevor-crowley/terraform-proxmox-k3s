@@ -2,8 +2,8 @@ export HTTP_PROXY="${http_proxy}"
 export HTTPS_PROXY="${http_proxy}"
 export http_proxy="${http_proxy}"
 export https_proxy="${http_proxy}"
-
-curl -sfL https://get.k3s.io | sh -s - ${mode} \
+echo k3s_version = ${k3s_version}
+curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=${k3s_version} sh -s - ${mode} \
 %{ for component in disable ~}
 --disable ${component} \
 %{ endfor ~}

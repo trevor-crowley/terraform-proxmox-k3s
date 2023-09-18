@@ -80,7 +80,8 @@ module "k3s" {
 }
 */
 module "rancher_k3s" {
-  source  = "github.com/trevor-crowley/terraform-proxmox-k3s.git"
+  source  = "../"
+#  source  = "github.com/trevor-crowley/terraform-proxmox-k3s.git"
   cluster_name = "rancher"
   authorized_keys_file = var.public_keys
 
@@ -99,6 +100,7 @@ module "rancher_k3s" {
 
   master_nodes_count = 2
   master_node_settings = {
+    k3s_version = "v1.26.4+k3s1"
     cores = 2
     memory = 4096
     disk_size = "10G"

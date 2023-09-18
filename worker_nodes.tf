@@ -116,6 +116,7 @@ resource "proxmox_vm_qemu" "k3s-worker" {
         datastores   = []
 
         http_proxy  = var.http_proxy
+        k3s_version = var.k3s_version
       })
     ]
   }

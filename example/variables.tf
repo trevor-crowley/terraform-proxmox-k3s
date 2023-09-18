@@ -8,10 +8,5 @@ variable "public_keys" {
   type        = string
   sensitive   = true
 }
-variable "storage_id" {
-  description = "Database administrator password"
-  type        = string
-  sensitive   = true
-}
 
 
